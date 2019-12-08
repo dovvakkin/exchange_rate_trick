@@ -1,8 +1,6 @@
 import random
 
-MAIN_CIRCLE = list(("A", "B", "C", "D", "E", "F"))
-SUBCIRCLE_LEN = 4
-SUBCIRCLES = 3
+NAMES = list(("A", "B", "C", "D", "E", "F"))
 
 # harcoded graph
 ADJACANCY_LISTS = {
@@ -15,6 +13,8 @@ ADJACANCY_LISTS = {
 }
 
 PAIRS_LIST = [(1, 4), (2, 3), (0, 3), (0, 5), (0, 2), (1, 2), (1, 5), (0, 4)]
+
+assert (len(NAMES) == len(ADJACANCY_LISTS.keys()))
 
 
 def get_pairs():
@@ -30,11 +30,34 @@ def get_pairs_list(pairs_set):
     return random.sample(list(pairs_set), len(pairs_set))
 
 
+def ask_next_rate(pair):
+    print("По какому курсу будем менять {} на {}: ".format(NAMES[pair[0]],
+                                                           NAMES[pair[1]]),
+          end='')
+    while True:
+        try:
+            rate_0, rate_1 = [int(i) for i in input().split(' ')]
+            assert ((rate_0 > 0) and (rate_1 > 0))
+            break
+        except (AssertionError, ValueError):
+            print("Что-то пошло не так, пожалуйста, снова введите два "
+                  "целых числа через пробел: ", end='')
+
+    return rate_0, rate_1
+
+
 def game():
     # pairs_set = get_pairs()
     # pairs_list = get_pairs_list(pairs_set)
 
     pairs_list = PAIRS_LIST
+    exchange_rates = dict()
+
+    for pair in pairs_list:
+        rate_0, rate_1 = ask_next_rate(pair)
+        if pair[0] not in exchange_rates:
+            exchange_rates[pair[0]] = dict()
+        exchange_rates[pair[0]][pair[1]] = rate_1 / rate_0
 
 
 game()
