@@ -1,4 +1,5 @@
 import random
+import copy
 
 NAMES = list(("A", "B", "C", "D", "E", "F"))
 # harcoded graph
@@ -45,32 +46,45 @@ def ask_next_rate(pair):
     return rate_0, rate_1
 
 
-def get_rates(dest, curr, prev, exchange_rates, curr_rate, rate_list):
+def get_rates(dest, curr, prev, exchange_rates, curr_rate, rate_list, route):
     for item_to in ADJACANCY_LISTS[curr]:
+        if curr in exchange_rates:
+            if item_to in exchange_rates[curr]:
+                rate = exchange_rates[curr][item_to]
+            else:
+                rate = 1 / exchange_rates[item_to][curr]
+        else:
+            rate = 1 / exchange_rates[item_to][curr]
+
         if item_to == dest:
-            rate_list.append(
-                curr_rate * exchange_rates[min(curr, dest)][max(curr, dest)])
+            route = copy.deepcopy(route)
+            route.append(curr)
+            rate_list.append(tuple((
+                route,
+                curr_rate * rate)))
         elif item_to == prev:
             continue
         else:
+            route = copy.deepcopy(route)
+            route.append(curr)
             get_rates(dest,
                       item_to,
                       curr,
                       exchange_rates,
-                      curr_rate * exchange_rates[min(curr, item_to)][
-                          max(curr, item_to)],
-                      rate_list)
+                      curr_rate * rate,
+                      rate_list,
+                      route)
 
 
 def print_result(rate_list):
     print(RESULT_HEADER)
+    rates = [i[1] for i in rate_list]
     print("Поздравляем! Один из придуманных вами путей обмена "
-          "позволяет обменять 1 {} на {} {}".format(NAMES[0],
-                                                    max(rate_list),
-                                                    NAMES[0]))
+          "позволяет обменять 1 {0} на {1} {0}".format(NAMES[0],
+                                                       min(rates)))
 
 
-def game():
+def game(debug=False):
     # pairs_set = get_pairs()
     # pairs_list = get_pairs_list(pairs_set)
 
@@ -84,7 +98,22 @@ def game():
         exchange_rates[pair[0]][pair[1]] = rate_1 / rate_0
 
     rate_list = list()
-    get_rates(0, 0, 0, exchange_rates, 1, rate_list)
+    route = list()
+    get_rates(0, 0, 0, exchange_rates, 1, rate_list, route)
+
+    if debug:
+        print()
+        for i in rate_list:
+            print(i)
+        print()
+
     print_result(rate_list)
 
-game()
+
+def main():
+    # TODO add argument parser
+    game()
+
+
+if __name__ == "__main__":
+    main()
