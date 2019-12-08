@@ -128,11 +128,7 @@ def main():
                         help="add debug backtrace output")
     args = parser.parse_args()
 
-    if args.debug:
-        debug = True
-    else:
-        debug = False
-    game(debug)
+    game(args.debug)
 
 
 if __name__ == "__main__":
