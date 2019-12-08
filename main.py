@@ -57,23 +57,24 @@ def get_rates(dest, curr, prev, exchange_rates, curr_rate, rate_list, route):
             rate = 1 / exchange_rates[item_to][curr]
 
         if item_to == dest:
-            route = copy.deepcopy(route)
-            route.append(curr)
+            local_route = copy.deepcopy(route)
+            local_route.append(curr)
+            local_route.append(dest)
             rate_list.append(tuple((
-                route,
+                local_route,
                 curr_rate * rate)))
         elif item_to == prev:
             continue
         else:
-            route = copy.deepcopy(route)
-            route.append(curr)
+            local_route = copy.deepcopy(route)
+            local_route.append(curr)
             get_rates(dest,
                       item_to,
                       curr,
                       exchange_rates,
                       curr_rate * rate,
                       rate_list,
-                      route)
+                      local_route)
 
 
 def print_result(rate_list):
@@ -112,7 +113,7 @@ def game(debug=False):
 
 def main():
     # TODO add argument parser
-    game()
+    game(True)
 
 
 if __name__ == "__main__":
