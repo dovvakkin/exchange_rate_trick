@@ -1,5 +1,6 @@
 import random
 import copy
+import argparse
 
 NAMES = list(("A", "B", "C", "D", "E", "F"))
 # harcoded graph
@@ -12,6 +13,8 @@ ADJACANCY_LISTS = {
     5: {0, 1}
 }
 PAIRS_LIST = [(1, 4), (2, 3), (0, 3), (0, 5), (0, 2), (1, 2), (1, 5), (0, 4)]
+DEBUG_HEADER = "\n~~~~~~~~~~DEBUG~MODE~~~~~~~~~~"
+DEBUG_FOOTER = "~~~~~~~~~~END~DEBUG~MODE~~~~~~~~~~"
 RESULT_HEADER = "\n============RESULTS============"
 
 assert (len(NAMES) == len(ADJACANCY_LISTS.keys()))
@@ -77,6 +80,13 @@ def get_rates(dest, curr, prev, exchange_rates, curr_rate, rate_list, route):
                       local_route)
 
 
+def print_debug_backtrace(rate_list):
+    print(DEBUG_HEADER)
+    for i in rate_list:
+        print("{}\t{}".format(i[0], i[1]))
+    print(DEBUG_FOOTER)
+
+
 def print_result(rate_list):
     print(RESULT_HEADER)
     rates = [i[1] for i in rate_list]
@@ -103,17 +113,26 @@ def game(debug=False):
     get_rates(0, 0, 0, exchange_rates, 1, rate_list, route)
 
     if debug:
-        print()
-        for i in rate_list:
-            print(i)
-        print()
+        print_debug_backtrace(rate_list)
 
     print_result(rate_list)
 
 
 def main():
     # TODO add argument parser
-    game(True)
+    parser = argparse.ArgumentParser(description='Make trick with user-given '
+                                                 'exchange rates for '
+                                                 'some things')
+    parser.add_argument('-d', '--debug',
+                        action="store_true",
+                        help="add debug backtrace output")
+    args = parser.parse_args()
+
+    if args.debug:
+        debug = True
+    else:
+        debug = False
+    game(debug)
 
 
 if __name__ == "__main__":
