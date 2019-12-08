@@ -1,0 +1,8 @@
+# project environment
+venv/
+
+# ide
+.idea
+
+# macOS
+.DS_Store
