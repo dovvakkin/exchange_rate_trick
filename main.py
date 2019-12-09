@@ -119,7 +119,6 @@ def game(debug=False):
 
 
 def main():
-    # TODO add argument parser
     parser = argparse.ArgumentParser(description='Make trick with user-given '
                                                  'exchange rates for '
                                                  'some things')
