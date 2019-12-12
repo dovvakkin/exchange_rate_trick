@@ -2,7 +2,9 @@ import random
 import copy
 import argparse
 
-NAMES = list(("A", "B", "C", "D", "E", "F"))
+NAMES = list(
+    ("мандаринов", "золотых колец", "стульев", "лопат", "штанг", "самокатов"))
+NAME_FOR_RINA = "мандарина"
 # harcoded graph
 ADJACENCY_LISTS = {
     0: {2, 3, 4, 5},
@@ -34,8 +36,8 @@ def get_pairs_list(pairs_set):
 
 
 def ask_next_rate(pair):
-    print("По какому курсу будем менять {} на {}: ".format(NAMES[pair[0]],
-                                                           NAMES[pair[1]]),
+    print("Сколько {} будем менять на сколько {}: ".format(NAMES[pair[0]].upper(),
+                                                           NAMES[pair[1]].upper()),
           end='')
     while True:
         try:
@@ -90,9 +92,8 @@ def print_debug_backtrace(rate_list):
 def print_result(rate_list):
     print(RESULT_HEADER)
     rates = [i[1] for i in rate_list]
-    print("Поздравляем! Один из придуманных вами путей обмена "
-          "позволяет обменять 1 {0} на {1} {0}".format(NAMES[0],
-                                                       max(rates)))
+    print("Меняясь по таким курсам, компьютер получил из 1 {0} "
+          "{1} {2}".format(NAME_FOR_RINA, max(rates), NAMES[0]))
 
 
 def game(debug=False):
