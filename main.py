@@ -4,7 +4,7 @@ import argparse
 
 NAMES = list(("A", "B", "C", "D", "E", "F"))
 # harcoded graph
-ADJACANCY_LISTS = {
+ADJACENCY_LISTS = {
     0: {2, 3, 4, 5},
     1: {2, 4, 5},
     2: {0, 1, 3},
@@ -12,18 +12,18 @@ ADJACANCY_LISTS = {
     4: {0, 1},
     5: {0, 1}
 }
-PAIRS_LIST = [(1, 4), (2, 3), (0, 3), (0, 5), (0, 2), (1, 2), (1, 5), (0, 4)]
+PAIRS_LIST = [(0, 3), (1, 4), (2, 3), (0, 5), (1, 2), (0, 4), (1, 5), (0, 2)]
 DEBUG_HEADER = "\n~~~~~~~~~~DEBUG~MODE~~~~~~~~~~"
 DEBUG_FOOTER = "~~~~~~~~~~END~DEBUG~MODE~~~~~~~~~~"
 RESULT_HEADER = "\n============RESULTS============"
 
-assert (len(NAMES) == len(ADJACANCY_LISTS.keys()))
+assert (len(NAMES) == len(ADJACENCY_LISTS.keys()))
 
 
 def get_pairs():
     pairs_set = set()
-    for item_from in ADJACANCY_LISTS:
-        for item_to in ADJACANCY_LISTS[item_from]:
+    for item_from in ADJACENCY_LISTS:
+        for item_to in ADJACENCY_LISTS[item_from]:
             pairs_set.add(
                 tuple((min(item_from, item_to), max(item_from, item_to))))
     return pairs_set
@@ -50,7 +50,7 @@ def ask_next_rate(pair):
 
 
 def get_rates(dest, curr, prev, exchange_rates, curr_rate, rate_list, route):
-    for item_to in ADJACANCY_LISTS[curr]:
+    for item_to in ADJACENCY_LISTS[curr]:
         if curr in exchange_rates:
             if item_to in exchange_rates[curr]:
                 rate = exchange_rates[curr][item_to]
@@ -92,7 +92,7 @@ def print_result(rate_list):
     rates = [i[1] for i in rate_list]
     print("Поздравляем! Один из придуманных вами путей обмена "
           "позволяет обменять 1 {0} на {1} {0}".format(NAMES[0],
-                                                       min(rates)))
+                                                       max(rates)))
 
 
 def game(debug=False):
