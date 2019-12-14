@@ -93,7 +93,7 @@ def print_result(rate_list):
     print(RESULT_HEADER)
     rates = [i[1] for i in rate_list]
     print("Меняясь по таким курсам, компьютер получил из 1 {0} "
-          "{1} {2}".format(NAME_FOR_RINA, max(rates), NAMES[0]))
+          "{1} {2}".format(NAME_FOR_RINA, round(max(rates), 2), NAMES[0]))
 
 
 def game(debug=False):
